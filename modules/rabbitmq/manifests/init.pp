@@ -28,7 +28,50 @@ class rabbitmq {
 
   service{"rabbitmq-server":
     ensure  => "running",
-    require => [Package["rabbitmq-server"], Exec["rabbitmq-plugins"]]
+    require => [Package["rabbitmq-server"], Exec["rabbitmq-plugins"], File['/etc/rabbitmq/ssl']]
+  }
+
+  file { '/etc/rabbitmq/ssl/':
+    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+  }
+
+  file { '/etc/rabbitmq/ssl/server_key.pem':
+    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/server_key.pem',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    notify => Service['rabbitmq-server'],
+    require => Package['rabbitmq-server'],
+  }
+
+  file { '/etc/rabbitmq/ssl/server_cert.pem':
+    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/server_cert.pem',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    notify => Service['rabbitmq-server'],
+    require => Package['rabbitmq-server'],
+  }
+
+  file { '/etc/rabbitmq/ssl/cacert.pem':
+    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/cacert.pem',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    notify => Service['rabbitmq-server'],
+    require => Package['rabbitmq-server'],
+  }
+ 
+  file { '/etc/rabbitmq/rabbitmq.conf':
+    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/rabbitmq.conf',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    notify => Service['rabbitmq-server'],
+    require => Package['rabbitmq-server'],
   }
 
   service{"iptables":
