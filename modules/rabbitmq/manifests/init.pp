@@ -28,53 +28,76 @@ class rabbitmq {
 
   service{"rabbitmq-server":
     ensure  => "running",
-    require => [Package["rabbitmq-server"], Exec["rabbitmq-plugins"], File['/etc/rabbitmq/ssl']]
+    require => [Exec["rabbitmq-plugins"], File["/etc/rabbitmq/rabbitmq.conf"]]
   }
 
   file { '/etc/rabbitmq/ssl/':
-    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/',
+    ensure => 'directory',    
     owner => 'root',
     group => 'root',
     mode => '644',
+    require => Package['rabbitmq-server'],
   }
 
   file { '/etc/rabbitmq/ssl/server_key.pem':
-    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/server_key.pem',
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/server_key.pem',
     owner => 'root',
     group => 'root',
     mode => '644',
-    notify => Service['rabbitmq-server'],
-    require => Package['rabbitmq-server'],
+    require => File['/etc/rabbitmq/ssl'],
   }
 
   file { '/etc/rabbitmq/ssl/server_cert.pem':
-    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/server_cert.pem',
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/server_cert.pem',
     owner => 'root',
     group => 'root',
     mode => '644',
-    notify => Service['rabbitmq-server'],
-    require => Package['rabbitmq-server'],
+    require => File['/etc/rabbitmq/ssl'],
   }
 
   file { '/etc/rabbitmq/ssl/cacert.pem':
-    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/ssl/cacert.pem',
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/cacert.pem',
     owner => 'root',
     group => 'root',
     mode => '644',
-    notify => Service['rabbitmq-server'],
-    require => Package['rabbitmq-server'],
+    require => File['/etc/rabbitmq/ssl'],
   }
  
   file { '/etc/rabbitmq/rabbitmq.conf':
-    source => '/etc/puppet/modules/rabbitmq/files/etc/rabbitmq/rabbitmq.conf',
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/rabbitmq.conf',
     owner => 'root',
     group => 'root',
     mode => '644',
-    notify => Service['rabbitmq-server'],
     require => Package['rabbitmq-server'],
   }
 
-  service{"iptables":
+  exec { 'add sensu vhost':
+    command => 'rabbitmqctl add_vhost /sensu',
+    path    => "/usr/bin:/usr/sbin:/bin",
+    user => 'root',
+    group => 'root',
+   #onlyif => '',
+    require => Service['rabbitmq-server'],
+ }
+
+  exec { 'add sensu user':
+    command => 'rabbitmqctl add_user sensu sensu',
+    path    => "/usr/bin:/usr/sbin:/bin",
+    user => 'root',
+    group => 'root',
+    #onlyif => '',
+    require => Service['rabbitmq-server'],
+ }
+
+  exec { 'set sensu permissions':
+    command => 'rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"',
+    path    => "/usr/bin:/usr/sbin:/bin",
+    user => 'root',
+    group => 'root',
+    require => Service['rabbitmq-server'],
+  }
+
+ service{"iptables":
     ensure  => "stopped"
   }
 }
