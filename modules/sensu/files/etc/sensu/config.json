@@ -23,5 +23,23 @@
     "port": 8080,
     "user": "admin",
     "password": "secret"
-  }
+  },
+  "checks": {
+    "cron_check": {
+      "handlers": ["default", "email"],
+      "command": "/etc/sensu/plugins/check-procs.rb -p crond -C 1 ",
+      "interval": 60,
+      "subscribers": [ "webservers" ]
+    }
+  },
+  "handlers": {
+    "email": {
+      "type": "pipe",
+      "command": "mail -s 'sensu alert' your@address"
+    },
+    "default": {
+      "type": "pipe",
+      "command": "mail -s 'sensu alert' your@address"
+    }
+  } 
 }

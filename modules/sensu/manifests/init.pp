@@ -1,12 +1,14 @@
 class sensu {
   info "Provisioning Sensu"
 
+  include sensu::check
+
   yumrepo{'sensu':
-    name => 'sensu-main',
+    descr => 'sensu-main',
     baseurl => 'http://repos.sensuapp.org/yum/el/6/i386/',
-    enabled => '1',
     gpgcheck => '0',
-  }  
+    enabled => '1',
+ }  
 
   package{"sensu":
     ensure => "present",
@@ -15,7 +17,7 @@ class sensu {
 
   service{"sensu-server":
     ensure => "running",
-    require => File['/etc/sensu/config.json'],
+    require => [File['/etc/sensu/config.json'], Class['sensu::check']],
   }
 
   service{"sensu-api":

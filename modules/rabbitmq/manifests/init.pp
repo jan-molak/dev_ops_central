@@ -76,18 +76,18 @@ class rabbitmq {
     path    => "/usr/bin:/usr/sbin:/bin",
     user => 'root',
     group => 'root',
-   #onlyif => '',
+    #onlyif => '', # TODO this should only run when vhost has not been created
     require => Service['rabbitmq-server'],
- }
+  }
 
   exec { 'add sensu user':
     command => 'rabbitmqctl add_user sensu sensu',
     path    => "/usr/bin:/usr/sbin:/bin",
     user => 'root',
     group => 'root',
-    #onlyif => '',
+    #onlyif => '', # TODO this should only run when user has not been created
     require => Service['rabbitmq-server'],
- }
+  }
 
   exec { 'set sensu permissions':
     command => 'rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"',
@@ -97,7 +97,7 @@ class rabbitmq {
     require => Service['rabbitmq-server'],
   }
 
- service{"iptables":
+  service{"iptables":
     ensure  => "stopped"
   }
 }
