@@ -1,7 +1,39 @@
 {
-  "client": {
-    "name": "sensu-server.dom.tld",
-    "address": "127.0.0.1",
-    "subscriptions": ["test", "webservers"]
-  }
+    "rabbitmq": {
+        "ssl": {
+            "private_key_file": "/etc/sensu/ssl/client_key.pem",
+            "cert_chain_file": "/etc/sensu/ssl/client_cert.pem"
+        },
+        "port": 5671,
+        "host": "localhost",
+        "user": "sensu",
+        "password": "sensu",
+        "vhost": "/sensu"
+    },
+    "client": {
+        "name": "sensu-server.dom.tld",
+        "address": "127.0.0.1",
+        "subscriptions": [
+            "webservers"
+        ]
+    },
+    "checks": {
+        "cron_check": {
+            "handlers": [
+                "default"
+            ],
+            "command": "/etc/sensu/plugins/check-procs.rb -p crond -C 1 ",
+            "interval": 60,
+            "subscribers": [
+                "webservers"
+            ]
+        },
+        "http_metrics": {
+            "type": "metric",
+            "handlers": ["graphite"],
+            "command": "/etc/sensu/plugins/http-metrics.rb -h www.google.com -p 80 --scheme stats.:::name:::",
+            "interval": 60,
+            "subscribers": [ "webservers" ]
+        }
+    }
 }

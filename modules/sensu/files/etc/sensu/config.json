@@ -7,7 +7,7 @@
     "port": 5671,
     "host": "localhost",
     "user": "sensu",
-    "password": "mypass",
+    "password": "sensu",
     "vhost": "/sensu"
   },
   "redis": {
@@ -26,20 +26,27 @@
   },
   "checks": {
     "cron_check": {
-      "handlers": ["default", "email"],
+      "handlers": ["default"],
       "command": "/etc/sensu/plugins/check-procs.rb -p crond -C 1 ",
       "interval": 60,
       "subscribers": [ "webservers" ]
-    }
+    },
+    "http_metrics": {
+      "type": "metric",
+      "handlers": ["graphite"],
+      "command": "/etc/sensu/plugins/http-metrics.rb -h www.google.com -p 80 --scheme stats.:::name:::",
+      "interval": 60,
+      "subscribers": [ "webservers" ]
+     }
   },
   "handlers": {
-    "email": {
-      "type": "pipe",
-      "command": "mail -s 'sensu alert' your@address"
-    },
     "default": {
       "type": "pipe",
       "command": "mail -s 'sensu alert' your@address"
+    },
+    "graphite": {
+      "type": "pipe",
+      "command": "/etc/sensu/handlers/metrics/graphite-tcp.rb"
     }
   } 
 }

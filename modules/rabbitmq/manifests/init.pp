@@ -28,7 +28,7 @@ class rabbitmq {
 
   service{"rabbitmq-server":
     ensure  => "running",
-    require => [Exec["rabbitmq-plugins"], File["/etc/rabbitmq/rabbitmq.conf"]]
+    require => [Exec["rabbitmq-plugins"], File["/etc/rabbitmq/rabbitmq.config"]]
   }
 
   file { '/etc/rabbitmq/ssl/':
@@ -63,8 +63,8 @@ class rabbitmq {
     require => File['/etc/rabbitmq/ssl'],
   }
  
-  file { '/etc/rabbitmq/rabbitmq.conf':
-    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/rabbitmq.conf',
+  file { '/etc/rabbitmq/rabbitmq.config':
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/rabbitmq.config',
     owner => 'root',
     group => 'root',
     mode => '644',
