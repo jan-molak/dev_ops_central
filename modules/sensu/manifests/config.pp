@@ -60,7 +60,7 @@ class sensu::config {
   }
 
   file{'/etc/sensu/config.json':
-    esnure => present,
+    ensure => present,
     source => '/vagrant/modules/sensu/files/etc/sensu/config.json',
     owner  => 'root',
     group  => 'root',

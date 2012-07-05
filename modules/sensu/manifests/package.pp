@@ -8,7 +8,7 @@ class sensu::package {
  }  
 
   package{"sensu":
-    ensure  => "present",
+    ensure  => present,
     require => Yumrepo['sensu'],
   }
 }
