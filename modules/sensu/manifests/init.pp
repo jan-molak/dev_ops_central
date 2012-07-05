@@ -51,6 +51,30 @@ class sensu {
     require => Package['sensu'],
   }
 
+  file{'/etc/sensu/handlers':
+    ensure => 'directory',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    require => Package['sensu'],
+  }
+ 
+  file{'/etc/sensu/handlers/metrics':
+    ensure => 'directory',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    require => File['/etc/sensu/handlers'],
+  }
+
+  file{'/etc/sensu/handlers/metrics/graphite-tcp.rb':
+    source => '/vagrant/modules/sensu/files/etc/sensu/handlers/metrics/graphite-tcp.rb',
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    require => File['/etc/sensu/handlers/metrics'],  
+  }
+
   file{'/etc/sensu/ssl/client_key.pem':
     source => '/vagrant/modules/sensu/files/etc/sensu/ssl/client_key.pem',
     owner => 'root',
