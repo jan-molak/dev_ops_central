@@ -34,6 +34,13 @@
             "command": "/etc/sensu/plugins/http-metrics.rb -h www.google.com -p 80 --scheme stats.:::name:::",
             "interval": 60,
             "subscribers": [ "webservers" ]
+        },
+        "cpu_metrics": {
+          "type": "metric",
+          "handlers": ["graphite"],
+          "command": "/etc/sensu/plugins/cpu-metrics.rb --scheme stats.:::name:::",
+          "interval": 60,
+          "subscribers": [ "webservers" ]
         }
     }
 }

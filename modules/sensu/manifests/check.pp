@@ -27,8 +27,8 @@ class sensu::check {
  		require => File['/etc/sensu/plugins'],
  	}
 
-	file{'/etc/sensu/plugins/http-metrics.rb':
-                source => '/vagrant/modules/sensu/files/etc/sensu/plugins/http-metrics.rb',
+	file{'/etc/sensu/plugins/cpu-metrics.rb':
+                source => '/vagrant/modules/sensu/files/etc/sensu/plugins/cpu-metrics.rb',
                 owner => 'root',
                 group => 'root',
                 mode => '777',
