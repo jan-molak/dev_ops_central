@@ -13,6 +13,6 @@ class role_monitoring_client {
 }
 
 node dev_ops_central {
-  include role_monitoring_server
+  #include role_monitoring_server
   include role_monitoring_client
 }
