@@ -9,6 +9,7 @@ class sensu::common::package {
 
   package{"sensu":
     ensure  => present,
-    require => Yumrepo['sensu'],
   }
+
+  Yumrepo['sensu'] -> Package['sensu']
 }
