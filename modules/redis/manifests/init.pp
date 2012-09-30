@@ -1,5 +1,7 @@
 class redis {
 
+	info "Redis"
+
 	package{'redis':
 		ensure => 'present',
 		provider => 'yum',

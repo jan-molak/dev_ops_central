@@ -12,4 +12,5 @@ class sensu::common::package {
   }
 
   Yumrepo['sensu'] -> Package['sensu']
+
 }

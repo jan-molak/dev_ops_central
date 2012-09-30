@@ -16,5 +16,6 @@ class sensu::server::service {
   }
 
   Service['sensu-server'] -> Service['sensu-api'] -> Service['sensu-dashboard']
+
 }
 

@@ -1,5 +1,7 @@
 class apache {
 	
+	info "Apache"
+
 	package{'httpd':
 		ensure => 'present',
 		provider => 'yum',

@@ -1,5 +1,7 @@
 class cron {
 
+	info "Cron"
+
 	package{'crontabs':
 		ensure => 'present',
 	}

@@ -1,7 +1,8 @@
 class sensu::common {
 
-  include sensu::common::package, sensu::common::config
+	info "Provisioning Sensu Common"
 
-  Class['sensu::common::package'] -> Class['sensu::common::config']
+  include sensu::common::package
+  include sensu::common::config
 
 }

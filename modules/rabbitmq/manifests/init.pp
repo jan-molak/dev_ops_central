@@ -71,30 +71,31 @@ class rabbitmq {
     require => Package['rabbitmq-server'],
   }
 
-  exec { 'add sensu vhost':
+  exec { 'add-sensu-vhost':
     command => 'rabbitmqctl add_vhost /sensu',
+    unless => 'rabbitmqctl list_vhosts | grep sensu',
     path    => "/usr/bin:/usr/sbin:/bin",
     user => 'root',
     group => 'root',
-    #onlyif => '', # TODO this should only run when vhost has not been created
     require => Service['rabbitmq-server'],
   }
 
-  exec { 'add sensu user':
+  exec { 'add-sensu-user':
     command => 'rabbitmqctl add_user sensu sensu',
+    unless =>   "/usr/sbin/rabbitmqctl list_users | grep sensu",
     path    => "/usr/bin:/usr/sbin:/bin",
     user => 'root',
     group => 'root',
-    #onlyif => '', # TODO this should only run when user has not been created
-    require => Service['rabbitmq-server'],
+    require => Exec['add-sensu-vhost'],
   }
 
-  exec { 'set sensu permissions':
+  exec { 'set-sensu-permissions':
     command => 'rabbitmqctl set_permissions -p /sensu sensu ".*" ".*" ".*"',
+    unless =>   "/usr/sbin/rabbitmqctl list_user_permissions sensu | grep '\\.\\*\\s\\.\\*\\s\\.\\*'",
     path    => "/usr/bin:/usr/sbin:/bin",
     user => 'root',
     group => 'root',
-    require => Service['rabbitmq-server'],
+    require => Exec['add-sensu-user'],
   }
 
   service{"iptables":

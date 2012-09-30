@@ -1,0 +1,4 @@
+{
+  "rabbitmq_server": "192.168.10.10",
+  "sensu_server": "192.168.10.10"
+}
