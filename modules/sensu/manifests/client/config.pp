@@ -1,4 +1,4 @@
-class sensu::client::config {
+class sensu::client::config($rabbitmq_server, $sensu_client) {
   
   file{'/etc/sensu/conf.d/rabbitmq.json':
       ensure => present,
@@ -10,7 +10,7 @@ class sensu::client::config {
 
   file{'/etc/sensu/conf.d/client.json':
       ensure => present,
-      source => template('/vagrant/modules/sensu/templates/etc/sensu/conf.d/client.json',
+      content => template('/vagrant/modules/sensu/templates/etc/sensu/conf.d/client.json.erb'),
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
@@ -35,16 +35,16 @@ class sensu::client::config {
   file{'/etc/sensu/plugins/check-procs.rb':
       ensure => present,
       source => '/vagrant/modules/sensu/files/etc/sensu/plugins/check-procs.rb',
-      owner  => 'root',
-      group  => 'root',
+      owner  => 'sensu',
+      group  => 'sensu',
       mode   => '0744',
   }
 
-  #file{'/etc/sensu/plugins/cpu-metric.rb':
-      #ensure => present,
-      #source => '/vagrant/modules/sensu/files/etc/sensu/plugins/cpu-metric.rb',
-      #owner  => 'root',
-      #group  => 'root',
-      #mode   => '0644',
-  #}
+  file{'/etc/sensu/plugins/cpu-metrics.rb':
+      ensure => present,
+      source => '/vagrant/modules/sensu/files/etc/sensu/plugins/cpu-metrics.rb',
+      owner  => 'sensu',
+      group  => 'sensu',
+      mode   => '0744',
+  }
 }

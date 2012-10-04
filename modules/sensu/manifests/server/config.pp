@@ -1,4 +1,4 @@
-class sensu::server::config {
+class sensu::server::config($rabbitmq_server) {
 
 	file{'/etc/sensu/conf.d/rabbitmq.json':
 	    ensure => present,
@@ -23,6 +23,14 @@ class sensu::server::config {
 	    group  => 'root',
 	    mode   => '0644',
   	}
+
+	file{'/etc/sensu/conf.d/checks.json':
+		ensure => absent,
+		source => '/vagrant/modules/sensu/files/etc/sensu/conf.d/checks.json',
+		owner  => 'root',
+		group  => 'root',
+		mode   => '0644',
+	}
 
 	file{'/etc/sensu/conf.d/dashboard.json':
 	    ensure => present,

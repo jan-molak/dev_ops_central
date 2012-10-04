@@ -1,17 +1,11 @@
 class rabbitmq {
   info "Provisioning RabbitMQ"
 
-  $version = "2.7.1"
+  $version = "2.8.7"
   $url     = "http://www.rabbitmq.com/releases/rabbitmq-server/v${version}/rabbitmq-server-${version}-1.noarch.rpm"
-
-  yumrepo{"epel-6.6":
-    mirrorlist => 'http://mirrors.fedoraproject.org/mirrorlist?repo=epel-6.6&arch=$basearch',
-    gpgcheck   => 0
-  }
 
   package{"erlang":
     ensure => "present",
-    require => Yumrepo["epel-6.6"]
   }
 
   package{"rabbitmq-server":
@@ -98,7 +92,4 @@ class rabbitmq {
     require => Exec['add-sensu-user'],
   }
 
-  service{"iptables":
-    ensure  => "stopped"
-  }
 }

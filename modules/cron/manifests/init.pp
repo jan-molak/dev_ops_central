@@ -1,13 +1,13 @@
 class cron {
 
-	info "Cron"
+	info "Provisioning Cron"
 
 	package{'crontabs':
 		ensure => 'present',
 	}
 
 	service{'crond':
-		ensure => 'running',
+		ensure => 'stopped',
 	}
 
 	Package['crontabs'] -> Service['crond']

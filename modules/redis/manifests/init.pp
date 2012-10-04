@@ -1,6 +1,6 @@
 class redis {
 
-	info "Redis"
+	info "Provisioning Redis"
 
 	package{'redis':
 		ensure => 'present',

@@ -1,20 +1,28 @@
-class role_monitoring_server {
-	$my_role = 'monitoring_server'
-	include ruby-devel
-	include rabbitmq
-	include redis
-	include hiera
-	include sensu::server
-
-	Class['ruby-devel'] -> Class['hiera'] -> Class['sensu::server']
+class monitoring_base {
+	include firewall
+	#include hiera
 }
 
-class role_monitoring_client {
+class role_monitoring_server inherits monitoring_base {
+	$my_role = 'monitoring_server'
+	
+	include rabbitmq
+	include redis
+	
+	class {'sensu::server':
+		rabbitmq_server => '192.168.10.10'
+	}
+}
+
+class role_monitoring_client inherits monitoring_base {
 	$my_role = 'monitoring_client'
+	
 	include cron
-	include ruby-devel
-	include hiera
-	include sensu::client
+	
+	class {'sensu::client':
+		rabbitmq_server => '192.168.10.10',
+		sensu_client => '192.168.10.20',
+	}
 }
 
 node monitoring_server {
