@@ -11,9 +11,10 @@ class role_monitoring_server inherits monitoring_base {
 	
 
 	class {
-		'redis': stage => first;
-		'rabbitmq': stage => main;
-		'sensu::server':   stage => last;
+		'redis':         stage => first;
+		'rabbitmq':      stage => first;
+		'sensu::server': stage => main;
+		'graphite':      stage => main;
 	}
 }
 
