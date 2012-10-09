@@ -5,6 +5,9 @@ Vagrant::Config.run do |config|
     server.vm.box = "dev_ops_central"
     server.vm.host_name = "monitoring_server"
     server.vm.network :hostonly, "192.168.10.10"
+    server.vm.provision :shell do |shell|
+      shell.inline = "cp /vagrant/modules/hiera/files/etc/puppet/hieradb/default.json /etc/puppet/hieradb"
+    end
     server.vm.provision :puppet do |puppet|
       puppet.manifest_file = "site.pp"
       puppet.module_path = File.expand_path("../modules", __FILE__)
@@ -19,6 +22,9 @@ Vagrant::Config.run do |config|
     client.vm.box = "dev_ops_central"
     client.vm.host_name = "monitoring_client"
     client.vm.network :hostonly, "192.168.10.20"
+    client.vm.provision :shell do |shell|
+      shell.inline = "cp /vagrant/modules/hiera/files/etc/puppet/hieradb/default.json /etc/puppet/hieradb"
+    end
     client.vm.provision :puppet do |puppet|
       puppet.manifest_file = "site.pp"
       puppet.module_path = File.expand_path("../modules", __FILE__)

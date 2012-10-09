@@ -21,23 +21,22 @@ yum -y install gcc make gcc-c++ ruby kernel-devel-`uname -r` zlib-devel openssl-
 gem install --no-ri --no-rdoc chef hiera hiera-puppet hiera-json
 cat > /etc/puppet/hiera.yaml << EOM
 ---
-  :logger: console
-  :backends:
-    - json
-	:hierarchy: 
-    - default
-	:json:
-   :datadir: /etc/puppet/hieradb
+:logger: console
+:backends:
+  - json
+:hierarchy: 
+  - default
+:json:
+  :datadir: /etc/puppet/hieradb
 EOM
 
 mkdir /etc/puppet/hieradb
 cat > /etc/puppet/hieradb/default.json << EOM
-#{}
+{}
 EOM
 
 # Cleaning up
-#yum -y clean all
-#rm /etc/yum.repos.d/{puppetlabs,epel}.repo
+yum -y clean all
 
 # Installing vagrant keys
 mkdir /home/vagrant/.ssh

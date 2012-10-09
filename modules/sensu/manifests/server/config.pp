@@ -1,4 +1,5 @@
-class sensu::server::config($rabbitmq_server) {
+class sensu::server::config($rabbitmq_server=hiera('rabbitmq_server'))
+{
 
 	file{'/etc/sensu/conf.d/rabbitmq.json':
 	    ensure => present,
