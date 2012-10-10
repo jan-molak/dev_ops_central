@@ -1,38 +1,29 @@
 class rabbitmq::config
 {
-  file { '/etc/rabbitmq/rabbitmq.config':
-    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/rabbitmq.config',
+  File {
     owner => 'root',
     group => 'root',
-    mode => '644'
+    mode  => '0644'
+  }
+
+  file { '/etc/rabbitmq/rabbitmq.config':
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/rabbitmq.config'
   }
 
 	file { '/etc/rabbitmq/ssl/':
-    ensure => 'directory',    
-    owner => 'root',
-    group => 'root',
-    mode => '644'
+    ensure => 'directory'
   }
 
   file { '/etc/rabbitmq/ssl/server_key.pem':
-    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/server_key.pem',
-    owner => 'root',
-    group => 'root',
-    mode => '644'
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/server_key.pem'
   }
 
   file { '/etc/rabbitmq/ssl/server_cert.pem':
-    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/server_cert.pem',
-    owner => 'root',
-    group => 'root',
-    mode => '644'
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/server_cert.pem'
   }
 
   file { '/etc/rabbitmq/ssl/cacert.pem':
-    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/cacert.pem',
-    owner => 'root',
-    group => 'root',
-    mode => '644'
+    source => '/vagrant/modules/rabbitmq/files/etc/rabbitmq/ssl/cacert.pem'
   }
  
   File['/etc/rabbitmq/ssl/'] -> File['/etc/rabbitmq/ssl/server_key.pem']

@@ -1,5 +1,7 @@
 class graphite
 {
+	info "Provisioning Graphite"
+
 	include graphite::package
 	include graphite::config
 	include graphite::service

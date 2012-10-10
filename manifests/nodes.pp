@@ -11,6 +11,7 @@ class role_monitoring_server inherits monitoring_base {
 	
 
 	class {
+		'apache':				 stage => first;
 		'redis':         stage => first;
 		'rabbitmq':      stage => first;
 		'sensu::server': stage => main;

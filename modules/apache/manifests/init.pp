@@ -27,7 +27,7 @@ class apache {
 	}
 
 	service{'httpd':
-		ensure => 'running',
+		ensure => 'stopped',
 	}
 
 	Package['httpd'] -> File['/etc/httpd/conf/httpd.conf'] -> Package['mod_ssl'] -> Service['httpd']
