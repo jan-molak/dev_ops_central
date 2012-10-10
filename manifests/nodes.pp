@@ -4,6 +4,7 @@ stage { 'last': require => Stage['main'] }
 class monitoring_base {
 	include firewall
 	include hiera
+	include selinux
 }
 
 class role_monitoring_server inherits monitoring_base {
