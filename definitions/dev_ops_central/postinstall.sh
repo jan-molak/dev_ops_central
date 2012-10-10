@@ -16,7 +16,12 @@ baseurl=http://download.fedoraproject.org/pub/epel/6/x86_64/
 gpgcheck=0
 EOM
 
-yum -y install gcc make gcc-c++ ruby kernel-devel-`uname -r` zlib-devel openssl-devel readline-devel sqlite-devel perl puppet facter ruby-devel rubygems vim
+# base installation
+yum -y install gcc make gcc-c++ kernel-devel-`uname -r` zlib-devel openssl-devel readline-devel sqlite-devel perl vim
+# everything for puppet and ruby
+yum -y install puppet facter ruby ruby-devel rubygems
+# dependencies for graphite
+yum -y install wget gcc zlib-devel curl curl-devel openssl rpm-build python python-ldap python-memcached python-sqlite2 pycairo python-twisted Django django-tagging bitmap bitmap-fonts python-devel glibc-devel openssl-devel python-zope-interface httpd memcached mod_wsgi
 
 gem install --no-ri --no-rdoc chef hiera hiera-puppet hiera-json
 cat > /etc/puppet/hiera.yaml << EOM

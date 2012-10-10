@@ -34,4 +34,8 @@ class graphite::config
   	source => '/vagrant/modules/graphite/files/opt/graphite/webapp/graphite/local_settings.py'
 	}
 
+	# turn off selinux
+	# techo 0 > /selinux/enforce
+	# setenforce 0
+
 }
