@@ -1,8 +1,8 @@
 ---
 :logger: console
 :backends:
-	- json
+  - json
 :hierarchy: 
-	- default
+  - default
 :json:
-	:datadir: /etc/puppet/hieradb
+  :datadir: /etc/puppet/hieradb
