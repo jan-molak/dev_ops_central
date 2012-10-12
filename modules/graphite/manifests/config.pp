@@ -15,7 +15,8 @@ class graphite::config
 	}
 
 	file {'/etc/init.d/carbon-cache':
-  	source => '/vagrant/modules/graphite/files/etc/init.d/carbon-cache'
+  	source => '/vagrant/modules/graphite/files/etc/init.d/carbon-cache',
+  	mode   => '0744'
 	}
 
 	file {'/opt/graphite/conf/carbon.conf':
@@ -34,8 +35,15 @@ class graphite::config
   	source => '/vagrant/modules/graphite/files/opt/graphite/webapp/graphite/local_settings.py'
 	}
 
-	# turn off selinux
-	# techo 0 > /selinux/enforce
-	# setenforce 0
+	file {'/opt/graphite/storage':
+		owner   => 'apache',
+		group   => 'apache',
+		recurse => true
+	}
+
+	exec { 'syncdb':
+		command => '/usr/bin/python /opt/graphite/webapp/graphite/manage.py syncdb --noinput',
+		unless  => '/usr/bin/python /opt/graphite/webapp/graphite/manage.py inspectdb | grep account_mygraph'
+	}
 
 }

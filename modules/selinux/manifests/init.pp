@@ -1,8 +1,9 @@
 class selinux
 {
-	exec {'disable-selinux':
-		command => "setenforce 0",
-		path    => "/usr/bin:/usr/sbin:/bin"
+	file{'/etc/selinux/config':
+		source => '/vagrant/modules/selinux/files/etc/selinux/config',
+		owner => 'root',
+		group => 'root',
+		mode => '644',
 	}
-
 }

@@ -7,4 +7,4 @@ class graphite
 	include graphite::service
 
 	Class['graphite::package'] -> Class['graphite::config'] -> Class['graphite::service']
- }
+}
