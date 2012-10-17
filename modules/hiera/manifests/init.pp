@@ -17,5 +17,4 @@ class hiera {
 		group  => 'root',
 		mode   => '0644',
 	}
-
 }

@@ -1,0 +1,52 @@
+#NameVirtualHost <%= vhost_name %>:<%= port %>
+#<VirtualHost <%= vhost_name %>:<%= port %>>
+  #ServerName <%= srvname %>
+#<% if serveradmin %>
+  #ServerAdmin <%= serveradmin %>
+#<% end %>
+#<% if serveraliases.is_a? Array -%>
+#<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
+#<% elsif serveraliases != '' -%>
+#<%= "  ServerAlias #{serveraliases}" %>
+#<% end -%>
+  #DocumentRoot <%= docroot %>
+  #<Directory <%= docroot %>>
+    #Options <%= options %>
+    #AllowOverride <%= Array(override).join(' ') %>
+    #Order allow,deny
+    #allow from all
+  #</Directory>
+  #ErrorLog <%= logroot %>/<%= name %>_error.log
+  #LogLevel warn
+  #CustomLog <%= logroot %>/<%= name %>_access.log combined
+  #ServerSignature Off
+#</VirtualHost>
+
+<VirtualHost *:80>
+
+  #ServerName graphite.somehost.com
+  DocumentRoot "/opt/graphite/webapp"
+  ErrorLog logs/graphite_error_log
+  TransferLog logs/graphite_access_log
+  LogLevel warn
+  WSGIDaemonProcess graphite processes=5 threads=5 display-name=" {GROUP}" inactivity-timeout=120
+  WSGIProcessGroup graphite
+  WSGIScriptAlias / /opt/graphite/conf/graphite.wsgi
+  Alias /content/ /opt/graphite/webapp/content/
+
+  <Location "/content/">
+   SetHandler None
+  </Location>
+
+  Alias /media/ "/usr/lib/python2.6/site-packages/django/contrib/admin/media/"
+
+  <Location "/media/">
+   SetHandler None
+  </Location>
+
+  <Directory /opt/graphite/conf/>
+   Order deny,allow
+   Allow from all
+  </Directory>
+
+</VirtualHost>

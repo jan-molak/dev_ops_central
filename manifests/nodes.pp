@@ -10,9 +10,8 @@ class monitoring_base {
 class role_monitoring_server inherits monitoring_base {
 	$my_role = 'monitoring_server'
 	
-
 	class {
-		'apache':				 stage => first;
+		'apache':				 stage => main;
 		'redis':         stage => first;
 		'rabbitmq':      stage => first;
 		'sensu::server': stage => main;

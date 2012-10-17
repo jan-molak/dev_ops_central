@@ -1,6 +1,7 @@
 class apache {
-	
 	info "Apache"
+
+	include apache::params
 
 	package{'httpd':
 		ensure => 'present',
@@ -27,9 +28,8 @@ class apache {
 	}
 
 	service{'httpd':
-		ensure => 'stopped',
+		ensure => 'running',
 	}
 
 	Package['httpd'] -> File['/etc/httpd/conf/httpd.conf'] -> Package['mod_ssl'] -> Service['httpd']
-
 }

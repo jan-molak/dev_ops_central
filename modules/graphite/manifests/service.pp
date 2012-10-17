@@ -7,6 +7,4 @@ class graphite::service
 	service {'carbon-cache':
 		ensure => 'running'
 	}
-
-	# restart httpd
 }

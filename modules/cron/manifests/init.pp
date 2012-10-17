@@ -11,5 +11,4 @@ class cron {
 	}
 
 	Package['crontabs'] -> Service['crond']
-
 }

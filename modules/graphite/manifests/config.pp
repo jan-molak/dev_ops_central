@@ -1,14 +1,16 @@
 class graphite::config
 {
+	include apache
+
 	File {
 		owner => 'root',
 		group => 'root',
 		mode  => '0644'
 	}
 
-	file {'/etc/httpd/conf.d/graphite.conf':
-  	source => '/vagrant/modules/graphite/files/etc/httpd/conf.d/graphite.conf'
-	}
+	#file {'/etc/httpd/conf.d/graphite.conf':
+  	#source => '/vagrant/modules/graphite/files/etc/httpd/conf.d/graphite.conf'
+	#}
 
 	file {'/etc/httpd/conf.d/wsgi.conf':
   	source => '/vagrant/modules/graphite/files/etc/httpd/conf.d/wsgi.conf'
@@ -41,9 +43,15 @@ class graphite::config
 		recurse => true
 	}
 
-	exec { 'syncdb':
+	exec {'syncdb':
 		command => '/usr/bin/python /opt/graphite/webapp/graphite/manage.py syncdb --noinput',
 		unless  => '/usr/bin/python /opt/graphite/webapp/graphite/manage.py inspectdb | grep account_mygraph'
 	}
 
+	apache::vhost {
+		'graphite':
+			port => 80,
+			docroot => '/opt/graphite/webapp',
+			template => 'apache/apache_vhost.erb',		
+	}
 }
